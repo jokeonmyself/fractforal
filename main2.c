@@ -11,11 +11,12 @@
 /* ************************************************************************** */
 
 #include "fractal.h"
+#include <stdio.h>
 
 
 int draw_mandelbrot(t_stu *stu);
 
-int	mouse_release(int button, int x, int y, struct t_stu *stu)
+int	mouse_release(int button, int x, int y, t_stu *stu)
 {
 	if (button == 4)
 		stu->zoom *= 1.5;
@@ -25,18 +26,19 @@ int	mouse_release(int button, int x, int y, struct t_stu *stu)
 	return (0);
 }
 
-int	arrows(int button, int x, int y, struct t_stu *stu1)
+int board(int but, t_stu *stu1)
 {
-	//if (button == 126)
-	//{
-		//stu->moveX *= 0.1;
-		//stu->moveY += 0.1;
-	//}
-	draw_mandelbrot (stu1);
+	printf("in arrows: %p\n", stu1);
+	if (but == 65362)
+	{
+		stu1->moveX += 0.1;
+		stu1->moveY -= 0.1;
+	}
+	draw_mandelbrot ((stu1));
 	return (0);
 }
 
-int	key_release(int keycode, int x, int y, struct t_stu *stu)
+int	key_release(int keycode, int x, int y, t_stu *stu)
 {
 	if (keycode == 53)
 		exit (0);
@@ -46,7 +48,9 @@ int	key_release(int keycode, int x, int y, struct t_stu *stu)
 int draw_mandelbrot(t_stu *stu)
 {
 	int k = 0;
-	int h = 900;
+
+
+		int h = 900;
 		int w = 900;
 
   double pr, pi;           //real and imaginary part of the pixel p
@@ -55,7 +59,6 @@ int draw_mandelbrot(t_stu *stu)
 	  double zoom = stu->zoom;
   int color; //the RGB color value for the pixel
   int maxIterations = 256;//after how much iterations the function should stop
-  //for(int y = 0; y < 900; y++)
 	int y = 0;
 	int x = 0;
 	int i;
@@ -65,7 +68,6 @@ int draw_mandelbrot(t_stu *stu)
 	win_ptr = stu->win_ptr;
 	while (y < 900)
 	{
-  //for(int x = 0; x < 900; x++)
 	x = 0;
 	while (x < 900)
   {
@@ -74,9 +76,6 @@ int draw_mandelbrot(t_stu *stu)
     pi = (y - h / 2) / (0.5 * zoom * h) + moveY;
     newRe = newIm = oldRe = oldIm = 0; //these should start at 0,0
     //"i" will represent the number of iterations
-    
-    //start the iteration process
-    //for(i = 0; i < maxIterations; i++)
 		i = 0;
 		while (i < maxIterations)
     {
@@ -96,7 +95,7 @@ int draw_mandelbrot(t_stu *stu)
 	iops = i%256;
 	else iops = 0;
 	color = 000255000 + (iops*1000000) + 255 * (i < maxIterations);
-  mlx_pixel_put(mlx_ptr, win_ptr, x, y, 255255255);
+  mlx_pixel_put(mlx_ptr, win_ptr, x, y, color);
 	x++;
   }
 	y++;
@@ -118,7 +117,7 @@ int main(int argc, char *argv[])
 	double pr, pi;           //real and imaginary part of the pixel p
 	double newRe, newIm, oldRe, oldIm;   //real and imaginary parts of new and old z
 	double zoom = 0.5, moveX = -0.5, moveY = 1; //you can change these to zoom and change position
-	stu = (t_stu *)ft_memalloc(sizeof(*stu));
+	stu = (t_stu *)ft_memalloc(sizeof(t_stu));
 	stu->zoom = 0.5;
 	stu->moveX = -0.5;
 	stu->moveY = 1;
@@ -127,9 +126,11 @@ int main(int argc, char *argv[])
 	int color; //the RGB color value for the pixel
 	int maxIterations = 256;//after how much iterations the function should stop
 	draw_mandelbrot(stu);
-	mlx_hook(win_ptr, 2, 0, &arrows, stu);
-	mlx_hook(win_ptr, 4, 0, &mouse_release, stu);
+	printf("before arrows: %p\n", stu);
+	printf("before arrows: %p\n", stu);
+	mlx_hook(stu->win_ptr, 2, 0, &board, stu);
+	mlx_hook(stu->win_ptr, 4, 0, &mouse_release, stu);
 	//mlx_hook(stu->win_ptr, 3, 0, &key_release, stu);
-	mlx_loop(mlx_ptr);
+	mlx_loop(stu->mlx_ptr);
 	return 0;
 }
