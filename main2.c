@@ -6,7 +6,7 @@
 /*   By: fkhrazz <fkhrazz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:00:24 by fkhrazz           #+#    #+#             */
-/*   Updated: 2019/02/27 14:40:42 by fkhrazz          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:48:52 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,37 +86,35 @@ int draw_mandelbrot(t_stu *stu)
 	
 	while (y < h)
 	{
-	x = 0;
-	while (x < w)
-  {
-    //calculate the initial real and imaginary part of z, based on the pixel location and zoom and position values
-    pr = 1.5 * (x - w / 2) / (0.5 * zoom * w) + moveX;
-    pi = (y - h / 2) / (0.5 * zoom * h) + moveY;
-    newRe = newIm = oldRe = oldIm = 0; //these should start at 0,0
-    //"i" will represent the number of iterations
-		i = 0;
-		while (i < maxIterations)
-    {
-      //remember value of previous iteration
-      oldRe = newRe;
-      oldIm = newIm;
-      //the actual iteration, the real and imaginary part are calculated
-      newRe = oldRe * oldRe - oldIm * oldIm + pr;
-      newIm = 2 * oldRe * oldIm + pi;
-      //if the point is outside the circle with radius 2: stop
-      if((newRe * newRe + newIm * newIm) > 4)
-		  break ;
-			i++;
+		x = 0;
+		while (x < w)
+  	{
+    	//calculate the initial real and imaginary part of z, based on the pixel location and zoom and position values
+    	pr = 1.5 * (x - w / 2) / (0.5 * zoom * w) + moveX;
+    	pi = (y - h / 2) / (0.5 * zoom * h) + moveY;
+    	newRe = newIm = oldRe = oldIm = 0; //these should start at 0,0
+    	//"i" will represent the number of iterations
+			i = 0;
+			while (i < maxIterations)
+    	{
+     	 //remember value of previous iteration
+     	 oldRe = newRe;
+    	  oldIm = newIm;
+    	  //the actual iteration, the real and imaginary part are calculated
+     	 newRe = oldRe * oldRe - oldIm * oldIm + pr;
+    	  newIm = 2 * oldRe * oldIm + pi;
+    	  //if the point is outside the circle with radius 2: stop
+    	  if((newRe * newRe + newIm * newIm) > 4)
+		 	 break ;
+				i++;
     }
-	double iops;
-	if (i != 0)
-	iops = i%256;
-	else iops = 0;
-	color = 000255000 + (iops*1000000) + 255 * (i < maxIterations);
-  //mlx_pixel_put(img_ptr, win_ptr, x, y, color);
-	data_addr[(stu->size_line / 4) * y + x] = color;
-	//printf("%d\n", data_addr[(stu->size_line / 4) * y + x]);
-	x++;
+		double iops;
+		if (i != 0)
+		iops = i%256;
+		else iops = 0;
+		color = 000255000 + (iops*1000000) + 255 * (i < maxIterations);
+		data_addr[(stu->size_line / 4) * y + x] = color;
+		x++;
   }
 	y++;
 	}
