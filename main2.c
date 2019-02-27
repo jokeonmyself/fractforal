@@ -6,7 +6,7 @@
 /*   By: fkhrazz <fkhrazz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 18:00:24 by fkhrazz           #+#    #+#             */
-/*   Updated: 2019/02/27 14:27:02 by fkhrazz          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:40:42 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int draw_mandelbrot(t_stu *stu)
 	//в отдельную функцию создания нового аймеджа
 	void *img_ptr;
 
-	img_ptr = mlx_new_image(mlx_ptr, 900, 900);
+	img_ptr = mlx_new_image(mlx_ptr, 1800, 1800);
 
 	int *data_addr;
 
@@ -70,8 +70,8 @@ int draw_mandelbrot(t_stu *stu)
 
 	data_addr = (int *) stu->data_addr;
 	
-		int h = 900;
-		int w = 900;
+		int h = 1800;
+		int w = 1800;
 
   	double pr, pi;           //real and imaginary part of the pixel p
   	double newRe, newIm, oldRe, oldIm;   //real and imaginary parts of new and old z
@@ -84,10 +84,10 @@ int draw_mandelbrot(t_stu *stu)
 		int i;
 		int size_line = stu->size_line;
 	
-	while (y < 900)
+	while (y < h)
 	{
 	x = 0;
-	while (x < 900)
+	while (x < w)
   {
     //calculate the initial real and imaginary part of z, based on the pixel location and zoom and position values
     pr = 1.5 * (x - w / 2) / (0.5 * zoom * w) + moveX;
@@ -114,20 +114,21 @@ int draw_mandelbrot(t_stu *stu)
 	else iops = 0;
 	color = 000255000 + (iops*1000000) + 255 * (i < maxIterations);
   //mlx_pixel_put(img_ptr, win_ptr, x, y, color);
-	data_addr[(stu->size_line / 4) + x] = color;
+	data_addr[(stu->size_line / 4) * y + x] = color;
+	//printf("%d\n", data_addr[(stu->size_line / 4) * y + x]);
 	x++;
   }
 	y++;
 	}
-	mlx_put_image_to_window(stu->mlx_ptr, stu->win_ptr, img_ptr, 900, 900);
+	mlx_put_image_to_window(stu->mlx_ptr, stu->win_ptr, img_ptr, 0, 0);
   return (0);
 }
 
 int main(int argc, char *argv[])
 {
 	int k = 0;
-	int h = 900;
-	int w = 900;
+	int h = 1800;
+	int w = 1800;
 	t_stu *stu;
 	void *mlx_ptr; 
 	mlx_ptr = mlx_init();

@@ -6,7 +6,7 @@
 /*   By: fkhrazz <fkhrazz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/21 16:13:59 by fkhrazz           #+#    #+#             */
-/*   Updated: 2019/02/27 14:07:22 by fkhrazz          ###   ########.fr       */
+/*   Updated: 2019/02/27 14:30:00 by fkhrazz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_stu
 	int bits_per_pixel;
 	int size_line;
 	int endian;
-	void *data_addr;
+	char *data_addr;
 	struct s_stu *next;
 }				t_stu;
 
